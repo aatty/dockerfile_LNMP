@@ -38,10 +38,13 @@ RUN  add-apt-repository ppa:chris-lea/redis-server
 RUN  apt-get update
 RUN  apt-get install redis-server -y
 
-COPY  config/default    /etc/nginx/sites-available/
-COPY  config/www.conf   /etc/php7/fpm/pool.d/www.conf
-COPY  config/service.conf /etc/supervisor/conf.d/service.conf
+RUN  mkdir -p  /var/www/trunk/public
 
-RUN  mkdir -p  /var/www/trunk
+COPY  config/nginx/default    /etc/nginx/sites-available/
+COPY  config/php7/www.conf   /etc/php7/fpm/pool.d/www.conf
+COPY  config/supervisor/service.conf /etc/supervisor/conf.d/service.conf
+COPY  config/index.php /var/www/trunk/public/index.php
+
+
 
 CMD ["/usr/bin/supervisord"]
